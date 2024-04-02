@@ -23,7 +23,7 @@ raw_GSS_data<-
 # Cleaning
 cleaned_GSS_data <-
   clean_names(raw_GSS_data) |>
-  drop_na(year, hlpoths, hlpsoc)
+  drop_na(year, age, abany, abpoor, abhlth, abrape)
 
 # Remove uncessary columns
 cleaned_GSS_data <-
@@ -34,6 +34,14 @@ cleaned_GSS_data <-
 selected_years <- c("2016", "2018", "2021", "2022")
 cleaned_GSS_data <- cleaned_GSS_data |>
   filter(year %in% selected_years)
+
+# Rename variable responses
+cleaned_GSS_data_renamed <- mutate(cleaned_GSS_data,
+  abany = recode(abany, '1' = 'yes', '2' = 'no'),
+  abpoor = recode(abpoor, '1' = 'yes', '2' = 'no'),
+  abhlth = recode(abhlth, '1' = 'yes', '2' = 'no'),
+  abrape = recode(abrape, '1' = 'yes', '2' = 'no')
+)
 
 # Rename columns to better understand
 cleaned_GSS_data <- cleaned_GSS_data |>
@@ -49,23 +57,6 @@ cleaned_GSS_data <-cleaned_GSS_data |>
   mutate(sex = recode(sex,
                  '1' = 'male',
                  '2' = 'female'))
-
-# Rename variable responses
-cleaned_GSS_data_renamed <-cleaned_GSS_data |>
-  mutate(
-    any_reason = recode(any_reason,
-                        '1' = 'yes',
-                        '2' = 'no'),
-    low_income = recode(low_income,
-                        '1' = 'yes',
-                        '2' = 'no'),
-    endangered_health = recode(endangered_health,
-                               '1' = 'yes',
-                               '2' = 'no'),
-    rape = recode(rape,
-                  '1' = 'yes',
-                  '2' = 'no')
-  )
 
 
 #### Save data ####

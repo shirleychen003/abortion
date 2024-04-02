@@ -1,0 +1,30 @@
+---
+title: "Abortion Public Opinion"
+subtitle: "Analysis of US General Social Survey from 2018 - 2022"
+author: Shirley Chen
+thanks: "Code and data in this report are available at: https://github.com/shirleychen003/abortion.git."
+date: today
+date-format: "long" 
+format: pdf
+abstract: yes and
+toc: true
+number-sections: true
+---
+
+```{r}
+#| include: false
+### Workspace Setup ###
+library(tidyverse)
+library(tinytex)
+library(janitor)
+library(here)
+library(knitr)
+library(usethis)
+library(gitcreds)
+library(kableExtra)
+
+#### Import data ####
+cleaned_GSS_data <-
+  read_csv("../data/cleaned_GSS_data.csv")
+
+```
