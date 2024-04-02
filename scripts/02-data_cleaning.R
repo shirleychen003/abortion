@@ -13,12 +13,19 @@ library(tidyverse)
 library(knitr)
 library(janitor)
 
-# Open data
-raw_GSS_data<-
+# # Open data
+# raw_GSS_data<-
+#   read_csv(
+#     "inputs/data/raw_GSS_data.csv",
+#     show_col_types = FALSE
+#   )
+
+raw_GSS_data <-
   read_csv(
-    "inputs/data/raw_GSS_data.csv",
+    "outputs/data/cleaned_GSS_data.dsv",
     show_col_types = FALSE
-  )
+       )
+  
 
 # Cleaning
 cleaned_GSS_data <-
