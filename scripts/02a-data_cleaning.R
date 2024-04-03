@@ -65,4 +65,11 @@ cleaned_GSS_data <-cleaned_GSS_data |>
   mutate(endangered_health = recode(endangered_health, 
                              '1' = 'yes', '2' = 'no'))
 cleaned_GSS_data <-cleaned_GSS_data |>
-  mutate(rape = rec
+  mutate(rape = recode(rape, '1' = 'yes', '2' = 'no'))
+cleaned_GSS_data <-cleaned_GSS_data |>
+  mutate(any_reason = recode(any_reason, 
+                             '1' = 'yes', '2' = 'no'))
+
+
+#### Save data ####
+write_csv(cleaned_GSS_data, "outputs/data/cleaned_GSS_data.csv")
