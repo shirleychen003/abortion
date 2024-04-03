@@ -1,6 +1,6 @@
 ---
 title: "Abortion Public Opinion"
-subtitle: "Analysis of US General Social Survey from 2010-2018"
+subtitle: "Analysis of US General Social Survey in 2006 and 2016"
 author: Shirley Chen
 thanks: "Code and data in this report are available at: https://github.com/shirleychen003/abortion.git."
 date: today
@@ -28,7 +28,9 @@ cleaned_GSS_data <-
   read_csv("../data/cleaned_GSS_data.csv")
 
 #### Variables ####
-
+years <- c("2006", "2016")
+responses <- c("yes", "no")
+custom_yes_no_colours <- c("#3f8f29", "#de1a24")
 
 ```
 
@@ -77,9 +79,9 @@ kable(variable_data,
 #| warning: false
 #| tbl-cap: Respondent Count of Participants in Age Groups by Year
 
-age_group_2010 <- cleaned_GSS_data |>
-  filter(year == 2010) |>
-  mutate(age_group = case_when(
+age_group_2006 <- cleaned_GSS_data |>
+  filter(year == 2006) |>
+  mutate(age_group_2006 = case_when(
     age >= 18 & age <= 24 ~ "18-24",
     age >= 25 & age <= 34 ~ "25-34",
     age >= 35 & age <= 44 ~ "35-44",
@@ -87,12 +89,12 @@ age_group_2010 <- cleaned_GSS_data |>
     age >= 55 & age <= 64 ~ "55-64",
     age >= 65 ~ "65+"
   )) |>
-  count(age_group) |>
-  pivot_wider(names_from = age_group, values_from = n)
+  count(age_group_2006) |>
+  pivot_wider(names_from = age_group_2006, values_from = n)
 
-age_group_2014 <- cleaned_GSS_data |>
-  filter(year == 2014) |>
-  mutate(age_group = case_when(
+age_group_2016 <- cleaned_GSS_data |>
+  filter(year == 2016) |>
+  mutate(age_group_2016 = case_when(
     age >= 18 & age <= 24 ~ "18-24",
     age >= 25 & age <= 34 ~ "25-34",
     age >= 35 & age <= 44 ~ "35-44",
@@ -100,30 +102,15 @@ age_group_2014 <- cleaned_GSS_data |>
     age >= 55 & age <= 64 ~ "55-64",
     age >= 65 ~ "65+"
   )) |>
-  count(age_group) |>
-  pivot_wider(names_from = age_group, values_from = n)
-
-age_group_2018 <- cleaned_GSS_data |>
-  filter(year == 2018) |>
-  mutate(age_group = case_when(
-    age >= 18 & age <= 24 ~ "18-24",
-    age >= 25 & age <= 34 ~ "25-34",
-    age >= 35 & age <= 44 ~ "35-44",
-    age >= 45 & age <= 54 ~ "45-54",
-    age >= 55 & age <= 64 ~ "55-64",
-    age >= 65 ~ "65+"
-  )) |>
-  count(age_group) |>
-  pivot_wider(names_from = age_group, values_from = n)
+  count(age_group_2016) |>
+  pivot_wider(names_from = age_group_2016, values_from = n)
 
 # Put the Year column back
-age_group_2010 <- mutate(age_group_2010, Year = 2010)
-age_group_2014 <- mutate(age_group_2014, Year = 2014)
-age_group_2018 <- mutate(age_group_2018, Year = 2018)
+age_group_2006 <- mutate(age_group_2006, Year = 2006)
+age_group_2016 <- mutate(age_group_2016, Year = 2016)
 
-combined_age_group_table <- bind_rows(age_group_2010,
-                                      age_group_2014,
-                                      age_group_2018)
+combined_age_group_table <- bind_rows(age_group_2006,
+                                      age_group_2016)
 
 combined_age_group_table <- combined_age_group_table |>
   select(Year, everything())
@@ -140,7 +127,7 @@ kable(combined_age_group_table,
 #| label: tbl-gender
 #| echo: false
 #| warning: false
-#| tbl-cap: Respondent Gender Count and Percentage for 2010, 2012, 2014, 2016, and 2018
+#| tbl-cap: Respondent Gender Count and Percentage for 2006 and 2016
 
 gender_demographic_data <- cleaned_GSS_data |>
   group_by(year, sex) |>
@@ -154,7 +141,193 @@ kable(gender_demographic_data,
       )
 ```
 
+```{r}
+#| label: tbl-age
+#| echo: false
+#| warning: false
+#| tbl-cap: Total Respondent Mean, Median, Mode, Min, and Max Age by Year
+
+age_2006_data <- cleaned_GSS_data |>
+  filter(year==2006) |>
+  select('age') |>
+   summarise(
+    mean = round(mean(age, na.rm = TRUE)),
+    median = round(median(age, na.rm = TRUE)),
+    mode = as.numeric(names(sort(table(age), decreasing = TRUE))[1]),
+    min = min(age, na.rm = TRUE),
+    max = round(max(age, na.rm = TRUE))
+  )
+
+age_2016_data <- cleaned_GSS_data |>
+  filter(year==2016) |>
+  select('age') |>
+   summarise(
+    mean = round(mean(age, na.rm = TRUE)),
+    median = round(median(age, na.rm = TRUE)),
+    mode = as.numeric(names(sort(table(age), decreasing = TRUE))[1]),
+    min = min(age, na.rm = TRUE),
+    max = round(max(age, na.rm = TRUE))
+  )
+
+combined_age_data <- bind_rows(age_2006_data, 
+                               age_2016_data)
+combined_age_data <- cbind(years, combined_age_data)
+
+
+kable(combined_age_data, 
+      col.names = c("Year",
+                    "Mean", 
+                    "Median",
+                    "Mode", 
+                    "Min", 
+                    "Max"),
+      booktabs = TRUE,
+      linesep = ""
+      )
+
+```
+
 ## Responses
+
+### Rape
+
+```{r}
+#| label: fig-rape
+#| echo: false
+#| warning: false
+#| fig-cap: Proportion of Yes and No Responses in 2006 and 2016 to the question "Should it be possible for a pregnant woman to obtain a legal abortion if she became pregnant as a result of rape?"
+
+# Rape Case Responses
+rape_data <- cleaned_GSS_data[c('year', 'rape')]
+
+rape_percentages <- rape_data |>
+  count(year, rape) |>
+  group_by(year) |>
+  mutate(percentage = n / sum(n) * 100) 
+
+rape_percentages$rape <- factor(
+  rape_percentages$rape, levels =
+    responses)
+
+ggplot(rape_percentages, aes(
+  x = as.factor(year),
+  y = percentage, 
+  fill = rape)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+       x = "Year",
+       y = "Percentage",
+       fill = "Responses") +
+  scale_y_continuous(labels = scales::percent_format(scale = 1), 
+                     limits = c(0, 100)) + 
+  scale_fill_manual(values = custom_yes_no_colours) +
+  theme_minimal()
+```
+
+### Endangered Health
+
+```{r}
+#| label: fig-endangeredhealth
+#| echo: false
+#| warning: false
+#| fig-cap: Proportion of Yes and No Responses in 2006 and 2016 to the question "Should it be possible for a pregnant woman to obtain a legal abortion if the woman's own health is seriously endangered by the pregnancy?"
+
+# Endangered Health Responses
+endangered_health_data <- cleaned_GSS_data[c('year', 'endangered_health')]
+
+endangered_health_percentages <- endangered_health_data |>
+  count(year, endangered_health) |>
+  group_by(year) |>
+  mutate(percentage = n / sum(n) * 100) 
+
+endangered_health_percentages$endangered_health <- factor(
+  endangered_health_percentages$endangered_health, levels =
+    responses)
+
+ggplot(endangered_health_percentages, aes(
+  x = as.factor(year),
+  y = percentage, 
+  fill = endangered_health)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+       x = "Year",
+       y = "Percentage",
+       fill = "Responses") +
+  scale_y_continuous(labels = scales::percent_format(scale = 1), 
+                     limits = c(0, 100)) + 
+  scale_fill_manual(values = custom_yes_no_colours) +
+  theme_minimal()
+```
+
+### Low Income
+
+```{r}
+#| label: fig-lowincome
+#| echo: false
+#| warning: false
+#| fig-cap: Proportion of Yes and No Responses in 2006 and 2016 to the question "Should it be possible for a pregnant woman to obtain a legal abortion if the family has a very low income and cannot afford any more children?"
+
+# Endangered Health Responses
+low_income_data <- cleaned_GSS_data[c('year', 'low_income')]
+
+low_income_percentages <- low_income_data |>
+  count(year, low_income) |>
+  group_by(year) |>
+  mutate(percentage = n / sum(n) * 100) 
+
+low_income_percentages$low_income <- factor(
+  low_income_percentages$low_income, levels =
+    responses)
+
+ggplot(low_income_percentages, aes(
+  x = as.factor(year),
+  y = percentage, 
+  fill = low_income)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+       x = "Year",
+       y = "Percentage",
+       fill = "Responses") +
+  scale_y_continuous(labels = scales::percent_format(scale = 1), 
+                     limits = c(0, 100)) + 
+  scale_fill_manual(values = custom_yes_no_colours) +
+  theme_minimal()
+```
+
+### Abortion for Any Reason
+
+```{r}
+#| label: fig-anyreason
+#| echo: false
+#| warning: false
+#| fig-cap: Proportion of Yes and No Responses in 2006 and 2016 to the question "Should it be possible for a pregnant woman to obtain a legal abortion if the woman wants it for any reason?"
+
+# Endangered Health Responses
+any_reason_data <- cleaned_GSS_data[c('year', 'any_reason')]
+
+any_reason_percentages <- any_reason_data |>
+  count(year, any_reason) |>
+  group_by(year) |>
+  mutate(percentage = n / sum(n) * 100) 
+
+any_reason_percentages$any_reason <- factor(
+  any_reason_percentages$any_reason, levels =
+    responses)
+
+ggplot(any_reason_percentages, aes(
+  x = as.factor(year),
+  y = percentage, 
+  fill = any_reason)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+       x = "Year",
+       y = "Percentage",
+       fill = "Responses") +
+  scale_y_continuous(labels = scales::percent_format(scale = 1), 
+                     limits = c(0, 100)) + 
+  scale_fill_manual(values = custom_yes_no_colours) +
+  theme_minimal()
+```
 
 # Results
 
@@ -163,6 +336,218 @@ kable(gender_demographic_data,
 ## Age
 
 ## Sex
+
+Rape
+
+2006 - 23% of females said no, 15.51% of males said no, higher proportion among women?
+
+```{r}
+#| label: tbl-rape2006
+#| tbl-cap: Rape Response Count and Proportions (%) 2006 by Sex
+#| warning: false
+#| echo: false
+
+rape_demographic_2006 <- 
+  cleaned_GSS_data[c('year','rape','sex')] 
+
+rape_demographic_2006 <- rape_demographic_2006 |>
+  filter(year==2006) |>
+  mutate(response = factor(rape, levels = responses)) |>
+  group_by(response, sex) |>
+  summarise(count = n()) |>
+  mutate(percentage = round((count / sum(count)) * 100, 2))
+
+kable(rape_demographic_2006, 
+      col.names = c('Response',
+                    'Sex',
+                    'Count',
+                    'Percentage'),
+      booktabs = TRUE,
+      linesep = ""
+      )
+```
+
+```{r}
+#| label: tbl-rape2016
+#| tbl-cap: Rape Response Count and Proportions (%) 2016 by Sex
+#| warning: false
+#| echo: false
+
+rape_demographic_2016 <- 
+  cleaned_GSS_data[c('year','rape','sex')] 
+
+rape_demographic_2016 <- rape_demographic_2016 |>
+  filter(year==2016) |>
+  mutate(response = factor(rape, levels = responses)) |>
+  group_by(response, sex) |>
+  summarise(count = n()) |>
+  mutate(percentage = round((count / sum(count)) * 100, 2))
+
+kable(rape_demographic_2016, 
+      col.names = c('Response',
+                    'Sex',
+                    'Count',
+                    'Percentage'),
+      booktabs = TRUE,
+      linesep = ""
+      )
+```
+
+Health
+
+```{r}
+#| label: tbl-health2006
+#| tbl-cap: Endangered Health Response Count and Proportions (%) 2006 by Sex
+#| warning: false
+#| echo: false
+endangered_health_demographic_2006 <- 
+  cleaned_GSS_data[c('year','endangered_health','sex')] 
+
+endangered_health_demographic_2006 <- endangered_health_demographic_2006 |>
+  filter(year==2006) |>
+  mutate(response = factor(endangered_health, levels = responses)) |>
+  group_by(response, sex) |>
+  summarise(count = n()) |>
+  mutate(percentage = round((count / sum(count)) * 100, 2))
+
+kable(endangered_health_demographic_2006, 
+      col.names = c('Response',
+                    'Sex',
+                    'Count',
+                    'Percentage'),
+      booktabs = TRUE,
+      linesep = ""
+      )
+```
+
+```{r}
+#| label: tbl-health2016
+#| tbl-cap: Endangered Health Response Count and Proportions (%) 2016 by Sex
+#| warning: false
+#| echo: false
+endangered_health_demographic_2016 <- 
+  cleaned_GSS_data[c('year','endangered_health','sex')] 
+
+endangered_health_demographic_2016 <- endangered_health_demographic_2016 |>
+  filter(year==2016) |>
+  mutate(response = factor(endangered_health, levels = responses)) |>
+  group_by(response, sex) |>
+  summarise(count = n()) |>
+  mutate(percentage = round((count / sum(count)) * 100, 2))
+
+kable(endangered_health_demographic_2016, 
+      col.names = c('Response',
+                    'Sex',
+                    'Count',
+                    'Percentage'),
+      booktabs = TRUE,
+      linesep = ""
+      )
+```
+
+Low income
+
+```{r}
+#| label: tbl-lowincome2006
+#| tbl-cap: Low Income Response Count and Proportions (%) 2006 by Sex
+#| warning: false
+#| echo: false
+low_income_demographic_2006 <- 
+  cleaned_GSS_data[c('year','low_income','sex')] 
+
+low_income_demographic_2006 <- low_income_demographic_2006 |>
+  filter(year==2006) |>
+  mutate(response = factor(low_income, levels = responses)) |>
+  group_by(response, sex) |>
+  summarise(count = n()) |>
+  mutate(percentage = round((count / sum(count)) * 100, 2))
+
+kable(low_income_demographic_2006, 
+      col.names = c('Response',
+                    'Sex',
+                    'Count',
+                    'Percentage'),
+      booktabs = TRUE,
+      linesep = ""
+      )
+```
+
+```{r}
+#| label: tbl-lowincome2016
+#| tbl-cap: Low Income Response Count and Proportions (%) 2016 by Sex
+#| warning: false
+#| echo: false
+low_income_demographic_2016 <- 
+  cleaned_GSS_data[c('year','low_income','sex')] 
+
+low_income_demographic_2016 <- low_income_demographic_2016 |>
+  filter(year==2016) |>
+  mutate(response = factor(low_income, levels = responses)) |>
+  group_by(response, sex) |>
+  summarise(count = n()) |>
+  mutate(percentage = round((count / sum(count)) * 100, 2))
+
+kable(low_income_demographic_2016, 
+      col.names = c('Response',
+                    'Sex',
+                    'Count',
+                    'Percentage'),
+      booktabs = TRUE,
+      linesep = ""
+      )
+```
+
+Any reason
+
+```{r}
+#| label: tbl-anyreason2006
+#| tbl-cap: Any Reason Response Count and Proportions (%) 2006 by Sex
+#| warning: false
+#| echo: false
+any_reason_demographic_2006 <- 
+  cleaned_GSS_data[c('year','any_reason','sex')] 
+
+any_reason_demographic_2006 <- any_reason_demographic_2006 |>
+  filter(year==2006) |>
+  mutate(response = factor(any_reason, levels = responses)) |>
+  group_by(response, sex) |>
+  summarise(count = n()) |>
+  mutate(percentage = round((count / sum(count)) * 100, 2))
+
+kable(any_reason_demographic_2006, 
+      col.names = c('Response',
+                    'Sex',
+                    'Count',
+                    'Percentage'),
+      booktabs = TRUE,
+      linesep = ""
+      )
+```
+
+```{r}
+#| label: tbl-anyreason2016
+#| tbl-cap: Any Reason Response Count and Proportions (%) 2016 by Sex
+#| warning: false
+#| echo: false
+any_reason_demographic_2016 <- 
+  cleaned_GSS_data[c('year','any_reason','sex')] 
+
+any_reason_demographic_2016 <- any_reason_demographic_2016 |>
+  filter(year==2016) |>
+  mutate(response = factor(any_reason, levels = responses)) |>
+  group_by(response, sex) |>
+  summarise(count = n()) |>
+  mutate(percentage = round((count / sum(count)) * 100, 2))
+
+kable(any_reason_demographic_2016, 
+      col.names = c('Response',
+                    'Sex',
+                    'Count',
+                    'Percentage'),
+      booktabs = TRUE,
+      linesep = ""
+      )
+```
 
 ## Socioeconomic Status
 
