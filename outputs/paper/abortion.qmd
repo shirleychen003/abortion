@@ -1,12 +1,12 @@
 ---
 title: "Abortion Public Opinion"
-subtitle: "Analysis of US General Social Survey from 2018 - 2022"
+subtitle: "Analysis of US General Social Survey from 2010-2018"
 author: Shirley Chen
 thanks: "Code and data in this report are available at: https://github.com/shirleychen003/abortion.git."
 date: today
 date-format: "long" 
 format: pdf
-abstract: yes and
+abstract: yas and
 toc: true
 number-sections: true
 ---
@@ -27,4 +27,161 @@ library(kableExtra)
 cleaned_GSS_data <-
   read_csv("../data/cleaned_GSS_data.csv")
 
+#### Variables ####
+
+
 ```
+
+# Introduction
+
+# Data
+
+## Source Data and Methodology
+
+## Data Cleaning
+
+```{r}
+#| label: tbl-cleaneddata
+#| echo: false
+#| warning: false
+#| tbl-cap: GSS Dataset
+
+variable_data <- data.frame( 
+  Variable = c( "abany", "abpoor", "abhlth", "abrape"),
+  "New Name" = c( "any_reason", "low_income", "endangered_health", "rape"), 
+  "Description of Reasons for Abortion" = c(
+    "the woman wants an abortion for any reason", 
+    "the family has a low income",
+    "the woman's own health is endangered",
+    "she became pregnant as a result of rape"), 
+  "Example Response" = c("yes", "no", "yes", "no")
+)
+
+kable(variable_data, 
+      col.names = c("Variable", 
+                    "New Name",
+                    "Description of Reasons for Abortion" ,
+                    "Example Response"),
+      booktabs = TRUE,
+      linesep = ""
+      )
+```
+
+## Data Terminology
+
+## Respondent Demographics
+
+```{r}
+#| label: tbl-agegroups
+#| echo: false
+#| warning: false
+#| tbl-cap: Respondent Count of Participants in Age Groups by Year
+
+age_group_2010 <- cleaned_GSS_data |>
+  filter(year == 2010) |>
+  mutate(age_group = case_when(
+    age >= 18 & age <= 24 ~ "18-24",
+    age >= 25 & age <= 34 ~ "25-34",
+    age >= 35 & age <= 44 ~ "35-44",
+    age >= 45 & age <= 54 ~ "45-54",
+    age >= 55 & age <= 64 ~ "55-64",
+    age >= 65 ~ "65+"
+  )) |>
+  count(age_group) |>
+  pivot_wider(names_from = age_group, values_from = n)
+
+age_group_2014 <- cleaned_GSS_data |>
+  filter(year == 2014) |>
+  mutate(age_group = case_when(
+    age >= 18 & age <= 24 ~ "18-24",
+    age >= 25 & age <= 34 ~ "25-34",
+    age >= 35 & age <= 44 ~ "35-44",
+    age >= 45 & age <= 54 ~ "45-54",
+    age >= 55 & age <= 64 ~ "55-64",
+    age >= 65 ~ "65+"
+  )) |>
+  count(age_group) |>
+  pivot_wider(names_from = age_group, values_from = n)
+
+age_group_2018 <- cleaned_GSS_data |>
+  filter(year == 2018) |>
+  mutate(age_group = case_when(
+    age >= 18 & age <= 24 ~ "18-24",
+    age >= 25 & age <= 34 ~ "25-34",
+    age >= 35 & age <= 44 ~ "35-44",
+    age >= 45 & age <= 54 ~ "45-54",
+    age >= 55 & age <= 64 ~ "55-64",
+    age >= 65 ~ "65+"
+  )) |>
+  count(age_group) |>
+  pivot_wider(names_from = age_group, values_from = n)
+
+# Put the Year column back
+age_group_2010 <- mutate(age_group_2010, Year = 2010)
+age_group_2014 <- mutate(age_group_2014, Year = 2014)
+age_group_2018 <- mutate(age_group_2018, Year = 2018)
+
+combined_age_group_table <- bind_rows(age_group_2010,
+                                      age_group_2014,
+                                      age_group_2018)
+
+combined_age_group_table <- combined_age_group_table |>
+  select(Year, everything())
+
+kable(combined_age_group_table,
+      col.names = c("Year", "18-24", "25-34", "35-44", "45-54", "55-64", "65+"),
+      booktabs = TRUE,
+      linesep = ""
+      )
+
+```
+
+```{r}
+#| label: tbl-gender
+#| echo: false
+#| warning: false
+#| tbl-cap: Respondent Gender Count and Percentage for 2010, 2012, 2014, 2016, and 2018
+
+gender_demographic_data <- cleaned_GSS_data |>
+  group_by(year, sex) |>
+  summarise(count = n()) |>
+  mutate(percentage = round((count / sum(count)) * 100, 2))
+
+kable(gender_demographic_data, 
+      col.names = c("Year", "Sex", "Count", "Percentage"),
+      booktabs = TRUE,
+      linesep = ""
+      )
+```
+
+## Responses
+
+# Results
+
+## Overall Trends
+
+## Age
+
+## Sex
+
+## Socioeconomic Status
+
+# Discussion
+
+## Economic Factors
+
+## Religious Views
+
+## Age
+
+## Sex
+
+\newpage
+
+\appendix
+
+# Appendix {.unnumbered}
+
+\newpage
+
+# References
