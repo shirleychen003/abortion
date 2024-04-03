@@ -30,8 +30,8 @@ filtered_GSS_data <-
   subset(filtered_GSS_data, select = c(year, age, sex, relig,
                                       abany, abpoor, abhlth, abrape))
 
-# Keep years 2010, 2014, 2018,
-selected_years <- c("2010", "2014", "2018")
+# Keep years 2006 and 2016,
+selected_years <- c("2006", "2016")
 filtered_GSS_data <- filtered_GSS_data |>
   filter(year %in% selected_years)
 
