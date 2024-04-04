@@ -30,4 +30,4 @@ Due to the file’s large size and Github limitations, we were unable to upload 
 
 ## Statement on LLM usage
 
-No LLMs were used in the research, replication, or writing of this paper.
+Navigate to `inputs/LLM` to view a statement on LLM usage.
