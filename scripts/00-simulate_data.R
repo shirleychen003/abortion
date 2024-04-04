@@ -1,7 +1,7 @@
 #### Preamble ####
 # Purpose: Simulates the change in responses for abortion from 2006 to 2016
 # Author: Shirley Chen
-# Date: 1 April 2024
+# Date: 1 April, 2024
 # Contact: sshirleyy.chen@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: None
