@@ -12,16 +12,15 @@ This repo provides an analysis of how the perspectives on reasons for abortion (
 
 The repo is structured as:
 
--   `data/raw_data` contains the raw data as obtained from GSS Data Explorer.
--   `data/analysis_data` contains the cleaned dataset that was constructed.
--   `other` contains relevant literature, details about LLM chat interactions, and sketches.
--   `paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper. 
+-   `inputs` contains details about LLM chat interactions and sketches.
+-   `outputs/data` contains the cleaned data as obtained from GSS Data Explorer.
+-   `paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the finalized paper. 
 -   `scripts` contains the R scripts used to simulate, download, clean, and test the data.
 
 ## Replication 
 1. Follow the steps in the GSS Data section below to retrieve the raw data.
-2. Run `scripts/02-data_cleaning.R` to generate cleaned data
-3. Render `outputs/paper/workplace_satisfaction.qmd` to generate the PDF of the paper
+2. Run `scripts/02-data_cleaning.R` and `scripts/02a-data_cleaning.R` to generate cleaned data
+3. Render `outputs/paper/abortion.qmd` to generate the PDF of the paper
 
 ## GSS Data
 Due to the file’s large size and Github limitations, we were unable to upload the raw data retrieved from the GSS Data Explorer website and the converted CSV version of the raw data to this repository. In order to run the files in the scripts folder (more specifically, the `01-download_data.R file`), attend to the following instructions:
