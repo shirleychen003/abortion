@@ -36,11 +36,29 @@ custom_yes_no_colours <- c("#3f8f29", "#de1a24")
 
 # Introduction
 
+in progress...
+
+In \[Data\], the data collection methodology, the data cleaning processes, and key variables. In \[Results\], the relationship between demographic information of participants and their responses as well as the overall change in importance is analyzed with supportive figures. Finally, in \[Discussion\], the significance and possible causes of our findings are explored within the factors of socioeconomic status, sex and age.
+
 # Data
 
 ## Source Data and Methodology
 
+Based at the University of Chicago since 1972, the GSS is a project with the objective of monitoring and analyzing the intricacies of American society [@GSSabout]. The GSS Data Explorer makes it so that data retrieved from the project is a publicly available resource, accessible to various types of people, such as educators, policymakers, or researchers through the National Opinion Research Center (NORC). It has even been referenced in leading publications, such as the New York Times and the Associated Press. Due to the variety of subjects covered regarding American society, the GSS is one of the most frequently visited resources for information for social sciences.
+
+Majority of the GSS data was collected through face-to-face interviews with the target population of adults (18+) residing in the United States. The standard national survey methods were practiced, such as hiring interviewers and training supervisors when needed. Interviewers were required to complete a practice interview supervised by evaluators at NORC [@GSScodebook].
+
+However, starting in 2002, computer-assisted personal interviewing (CAPI) methods were introduced [@GSScodebook]. The use of manual edits and keypunching were eliminated, and training to learn how to use CAPI was included. The dataset used for this paper was retrieved from the GSS Data Explorer website [@GSSexplorer]. All the survey data used to measure the public opinion on different reasons for abortion were in the Core Module of GSS and tagged with Abortion and Split Ballots; the specific variable names extracted were abany, abpoor, abhlth, and abrape. For the years and demographic data, the specific variable names extracted were year (later filtered to just 2006 and 2016), age, relig, and sex.
+
+### Strengths and Limitations
+
+### Biases to Consider
+
 ## Data Cleaning
+
+The open source statistical programming language [@R-base] was used to clean and analyze the data, along with producing the graphs. The main packages that supported this process included [@R-tidyverse], [@R-ggplot2], [@R-knitr], [@R-janitor], and [@R-lubridate].
+
+The cleaning process involved filtering the specific data variables used for our analysis from the downloaded GSS dataset, and renaming any variables with meaningful names. For example, rather than “abany” being the column name for “The woman wants an abortion for any reason?” , we renamed it to ‘any_reason’, as shown in @tbl-cleaneddata. Further, the numerical values representing the participants’ responses for the abortion (eg. Yes - 1, No - 2) and religion (eg. Protestant - 1, Catholic - 2, etc.) were changed to the representative words. @tbl-cleaneddata shows the old and new variable names for the abortion questioins used in cleaning, the description of variables, and sample responses.
 
 ```{r}
 #| label: tbl-cleaneddata
@@ -71,16 +89,21 @@ kable(variable_data,
 
 ## Data Terminology
 
+The response choices for the questions regarding abortion and their respective code in brackets are as follows: Inapplicable (-100), No Answer (-99), Do Not Know/Cannot Choose (-98), Skipped on Web (-97), Yes (1), and No (2). The response choices for the religion question and their respective code in brackets are as follows: No Answer (-99), Do Not Know/Cannot Choose (-98), Skipped on Web (-97), Protestant (1), Catholic (2), Jewish (3), None (4), Other (5), Buddhism (6), Hinduism (7), Other eastern religions (8), Muslim/Islam (9), Orthodox-Christian (10), Christian (11), Native American (12), and Inter-nondenominational (13). For our graphs, we did not include the Inapplicable, No Answer, and Do Not Know/Cannot choose responses to focus on the discernible participant responses.
+
 ## Respondent Demographics
+
+@tbl-agegroups displays the number of respondents among the different age groups for the 2006 and 2016 surveys. The classified age groups are ‘18-24’, ‘25-34’, ‘45-54’, ‘55-64’, and ‘65+’. The 18-24 age group had the least amount of participants each year, while the '35-44' age group had the highest proportion in 2006 and the '65+' age group had the highest proportion in 2016.
 
 ```{r}
 #| label: tbl-agegroups
 #| echo: false
 #| warning: false
-#| tbl-cap: Respondent Count of Participants in Age Groups by Year
+#| tbl-cap: Respondent Count of Participants in Age Groups in 2006 and 2016
 
 age_group_2006 <- cleaned_GSS_data |>
   filter(year == 2006) |>
+
   mutate(age_group_2006 = case_when(
     age >= 18 & age <= 24 ~ "18-24",
     age >= 25 & age <= 34 ~ "25-34",
@@ -122,6 +145,8 @@ kable(combined_age_group_table,
       )
 
 ```
+
+@tbl-gender shows the number and percentage of male and female respondents for 1989, 1998, 2006, and 2016. The percentages of female participants were consistently higher than the male participants, as the female participant percentages were always above 50% while the male participant percentages ranged from low to high 40s.
 
 ```{r}
 #| label: tbl-gender
@@ -191,6 +216,8 @@ kable(combined_age_data,
 
 ### Rape
 
+@fig-rape displays the proportion of Yes and No responses in 2006 and 2016 to the question "Should it be possible for a pregnant woman to obtain a legal abortion if she became pregnant as a result of rape?"
+
 ```{r}
 #| label: fig-rape
 #| echo: false
@@ -225,6 +252,8 @@ ggplot(rape_percentages, aes(
 ```
 
 ### Endangered Health
+
+@fig-endangeredhealth displays the proportion of Yes and No responses in 2006 and 2016 to the question "Should it be possible for a pregnant woman to obtain a legal abortion if the woman's own health is seriously endangered by the pregnancy?"
 
 ```{r}
 #| label: fig-endangeredhealth
@@ -261,6 +290,8 @@ ggplot(endangered_health_percentages, aes(
 
 ### Low Income
 
+@fig-lowincome displays the proportion of Yes and No responses in 2006 and 2016 to the question "Should it be possible for a pregnant woman to obtain a legal abortion if the family has a very low income and cannot afford any more children?"
+
 ```{r}
 #| label: fig-lowincome
 #| echo: false
@@ -295,6 +326,8 @@ ggplot(low_income_percentages, aes(
 ```
 
 ### Abortion for Any Reason
+
+@fig-anyreason displays the proportion of Yes and No responses in 2006 and 2016 to the question "Should it be possible for a pregnant woman to obtain a legal abortion if the woman wants it for any reason?"
 
 ```{r}
 #| label: fig-anyreason
@@ -333,13 +366,13 @@ ggplot(any_reason_percentages, aes(
 
 ## Overall Trends
 
-## Age
+### Age
 
-## Sex
+## 
 
-Rape
+### Sex
 
-2006 - 23% of females said no, 15.51% of males said no, higher proportion among women?
+@tbl-rape2006
 
 ```{r}
 #| label: tbl-rape2006
@@ -367,6 +400,8 @@ kable(rape_demographic_2006,
       )
 ```
 
+@tbl-rape2016
+
 ```{r}
 #| label: tbl-rape2016
 #| tbl-cap: Rape Response Count and Proportions (%) 2016 by Sex
@@ -393,7 +428,7 @@ kable(rape_demographic_2016,
       )
 ```
 
-Health
+@tbl-health2006
 
 ```{r}
 #| label: tbl-health2006
@@ -420,6 +455,8 @@ kable(endangered_health_demographic_2006,
       )
 ```
 
+@tbl-health2016
+
 ```{r}
 #| label: tbl-health2016
 #| tbl-cap: Endangered Health Response Count and Proportions (%) 2016 by Sex
@@ -445,7 +482,7 @@ kable(endangered_health_demographic_2016,
       )
 ```
 
-Low income
+@tbl-lowincome2006
 
 ```{r}
 #| label: tbl-lowincome2006
@@ -472,6 +509,8 @@ kable(low_income_demographic_2006,
       )
 ```
 
+@tbl-lowincome2016
+
 ```{r}
 #| label: tbl-lowincome2016
 #| tbl-cap: Low Income Response Count and Proportions (%) 2016 by Sex
@@ -497,7 +536,7 @@ kable(low_income_demographic_2016,
       )
 ```
 
-Any reason
+@tbl-anyreason2006
 
 ```{r}
 #| label: tbl-anyreason2006
@@ -524,6 +563,8 @@ kable(any_reason_demographic_2006,
       )
 ```
 
+@tbl-anyreason2016
+
 ```{r}
 #| label: tbl-anyreason2016
 #| tbl-cap: Any Reason Response Count and Proportions (%) 2016 by Sex
@@ -549,17 +590,25 @@ kable(any_reason_demographic_2016,
       )
 ```
 
-## Socioeconomic Status
+## Religious Views
 
 # Discussion
 
-## Economic Factors
+## Generational Differences
+
+## Sex
 
 ## Religious Views
 
-## Age
+## Economic Status
 
-## Sex
+## Temporal Movements and Law Changes
+
+-   will talk about the different law changes and movements occurring before, during, and after the specific years
+
+### 2006
+
+### 2016 
 
 \newpage
 
