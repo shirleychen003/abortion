@@ -1,7 +1,7 @@
 # How Opinions On Abortion Have Evolved Among American Adults
 
 ## Overview
-This paper explores the public opinions of American adults in 2006 and 2016 on varying reasons a woman may want to obtain a legal abortion. Various factors such as age group, sex, religious beliefs, and influential movements/law changes are discussed. Respondents were instructed to choose Yes(1) or No(2) to convey their perspective about the following reasons:
+This paper explores the public opinions of American adults in 2006 and 2016 on varying reasons a woman may want to obtain a legal abortion. Various factors such as age group, sex, religious beliefs, and influential movements/law changes are discussed. Respondents were instructed to choose Yes(1) or No(2) after being given prompts to convey their perspectives on if the following reasons were valid:
 1. If she became pregnant as a result of rape?
 2. If the woman's own health is seriously endangered by the pregnancy?
 3. If the family has a very low income and cannot afford any more children?
