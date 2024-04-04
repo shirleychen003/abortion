@@ -1,7 +1,7 @@
 #### Preamble ####
 # Purpose: Cleans the filtered data
 # Author: Shirley Chen
-# Date: 1 April 2024
+# Date: 1 April, 2024
 # Contact: sshirleyy.chen@mail.utoronto.ca
 # License: MIT
 # Pre-requisites:
