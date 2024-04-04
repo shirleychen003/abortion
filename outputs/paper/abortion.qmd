@@ -1,12 +1,12 @@
 ---
-title: "Abortion Public Opinion"
+title: "How Opinions On Abortion Have Evolved Among American Adults"
 subtitle: "Analysis of US General Social Survey in 2006 and 2016"
 author: Shirley Chen
 thanks: "Code and data in this report are available at: https://github.com/shirleychen003/abortion.git."
 date: today
 date-format: "long" 
 format: pdf
-abstract: yas and
+abstract: abstract in progress :)
 toc: true
 number-sections: true
 ---
@@ -31,6 +31,10 @@ cleaned_GSS_data <-
 years <- c("2006", "2016")
 responses <- c("yes", "no")
 custom_yes_no_colours <- c("#3f8f29", "#de1a24")
+religion_order <- c("Protestant", "Catholic", "Jewish", "None", "Other", "Buddhism", 
+                    "Hinduism", "Other eastern religions", "Muslim/Islam", 
+                    "Orthodox-Christian" , "Christian", "Native American", 
+                    "Inter-nondenominational")
 
 ```
 
@@ -210,6 +214,58 @@ kable(combined_age_data,
       linesep = ""
       )
 
+```
+
+@tbl-religion2006 displays the proportion of participants of each religion in the survey in 2006.
+
+```{r}
+#| label: tbl-religion2006
+#| echo: false
+#| warning: false
+#| tbl-cap: Respondent Religion Count and Percentage for 2006 
+
+religion2006_data <- cleaned_GSS_data |>
+  filter(year==2006)
+
+religion2006_data <- religion2006_data |>
+  group_by(religion) |>
+  summarise(count = n()) |>
+  mutate(
+    religion = factor(religion, levels = religion_order),
+    percentage = round((count / sum(count)) * 100, 2)
+  )
+
+kable(religion2006_data, 
+      col.names = c("Religion", "Count", "Percentage"),
+      booktabs = TRUE,
+      linesep = ""
+      )
+```
+
+@tbl-religion2016 displays the proportion of participants of each religion in the survey in 2016.
+
+```{r}
+#| label: tbl-religion2016
+#| echo: false
+#| warning: false
+#| tbl-cap: Respondent Religion Count and Percentage for 2016
+
+religion2016_data <- cleaned_GSS_data |>
+  filter(year==2016)
+
+religion2016_data <- religion2016_data |>
+  group_by(religion) |>
+  summarise(count = n()) |>
+  mutate(
+    religion = factor(religion, levels = religion_order),
+    percentage = round((count / sum(count)) * 100, 2)
+  )
+
+kable(religion2016_data, 
+      col.names = c("Religion", "Count", "Percentage"),
+      booktabs = TRUE,
+      linesep = ""
+      )
 ```
 
 ## Responses
