@@ -1,7 +1,7 @@
 #### Preamble ####
 # Purpose: Testing 02a-data_cleaning.R
 # Author: Shirley Chen
-# Date: 1 April 2024
+# Date: 1 April, 2024
 # Contact: sshirleyy.chen@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: Download 02a-data_cleaning.R
