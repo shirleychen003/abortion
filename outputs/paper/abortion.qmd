@@ -9,6 +9,7 @@ format: pdf
 abstract: abstract in progress :)
 toc: true
 number-sections: true
+bibliography: bibliography.bib
 ---
 
 ```{r}
@@ -664,13 +665,15 @@ kable(any_reason_demographic_2016,
 
 ### 2006
 
-### 2016 
+### 2016
 
 \newpage
 
 \appendix
 
 # Appendix {.unnumbered}
+
+asdf
 
 \newpage
 
