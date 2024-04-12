@@ -23,6 +23,8 @@ library(knitr)
 library(usethis)
 library(gitcreds)
 library(kableExtra)
+library(flextable)
+library(gt)
 
 #### Import data ####
 cleaned_GSS_data <-
@@ -217,10 +219,10 @@ kable(combined_age_data,
 
 ```
 
-@tbl-religion2006 displays the proportion of participants of each religion in the survey in 2006.
+@tbl-religion displays the proportion of participants of each religion in the survey in 2006 and 2016. The religion with the highest proportion of responses for both years was "Protestant" with 52.46% in 2006 and 47.70% in 2016. The religion with the lowest proportion of responses for 2006 was "Other eastern religions" with a value of 0.11%, and there was an equal amount of respondents for "Other eastern religions" and "Inter-nondenominational" with a value of 0.24% in 2016. 
 
 ```{r}
-#| label: tbl-religion2006
+#| label: tbl-religion
 #| echo: false
 #| warning: false
 #| tbl-cap: Respondent Religion Count and Percentage for 2006 
@@ -236,20 +238,11 @@ religion2006_data <- religion2006_data |>
     percentage = round((count / sum(count)) * 100, 2)
   )
 
-kable(religion2006_data, 
-      col.names = c("Religion", "Count", "Percentage"),
-      booktabs = TRUE,
-      linesep = ""
-      )
-```
-
-@tbl-religion2016 displays the proportion of participants of each religion in the survey in 2016.
-
-```{r}
-#| label: tbl-religion2016
-#| echo: false
-#| warning: false
-#| tbl-cap: Respondent Religion Count and Percentage for 2016
+# kable(religion2006_data,
+#       col.names = c("Religion", "2006 Count", "2006 Percentages"),
+#       booktabs = TRUE,
+#       linesep = ""
+#       )
 
 religion2016_data <- cleaned_GSS_data |>
   filter(year==2016)
@@ -262,12 +255,34 @@ religion2016_data <- religion2016_data |>
     percentage = round((count / sum(count)) * 100, 2)
   )
 
-kable(religion2016_data, 
-      col.names = c("Religion", "Count", "Percentage"),
+# kable(religion2016_data,
+#       col.names = c("Religion", " 2016 Count", "2016 Percentages"),
+#       booktabs = TRUE,
+#       linesep = ""
+#       )
+
+religion2006_data_2 <- religion2006_data |>
+  rename(count_2006 = count, percentage_2006 = percentage)
+
+# Rename count and percentage columns in religion2016_cleaned_data
+religion2016_data_2 <- religion2016_data |>
+  rename(count_2016 = count, percentage_2016 = percentage)
+
+# Combine the datasets using left_join
+combined_data <- left_join(religion2006_data_2, 
+                           religion2016_data_2,
+                           by = "religion")
+
+kable(combined_data,
+      col.names = c("Religion",
+      "2006 Count",
+      "2006 Percentages",
+      "2016 Count",
+      "2016 Percentages"), 
       booktabs = TRUE,
-      linesep = ""
-      )
+      linesep = "")
 ```
+
 
 ## Responses
 
@@ -556,14 +571,28 @@ low_income_demographic_2006 <- low_income_demographic_2006 |>
   summarise(count = n()) |>
   mutate(percentage = round((count / sum(count)) * 100, 2))
 
-kable(low_income_demographic_2006, 
-      col.names = c('Response',
-                    'Sex',
-                    'Count',
-                    'Percentage'),
-      booktabs = TRUE,
-      linesep = ""
+low_income_demographic_2006_table <- 
+  kable(low_income_demographic_2006,
+        col.names = c('Response',
+                      'Sex',
+                      'Count',
+                      'Percentage'),
+        booktabs = TRUE,
+        linesep = ""
       )
+
+# ft2006 <- flextable(low_income_demographic_2006[ sample.int(10),])
+# ft2006 <- add_header_row(ft2006,
+#                      colwidths = c(4),
+#                      values = c("2006"))
+# ft2006 <- align(ft2006, align = "center", part = "header")
+# ft2006 <- set_table_properties(ft2006, layout = "autofit")
+# ft2006
+
+LID_2006_table <- add_header_above(low_income_demographic_2006_table, 
+                                   header = c("2006" = 4))
+LID_2006_table
+
 ```
 
 @tbl-lowincome2016
@@ -583,14 +612,66 @@ low_income_demographic_2016 <- low_income_demographic_2016 |>
   summarise(count = n()) |>
   mutate(percentage = round((count / sum(count)) * 100, 2))
 
-kable(low_income_demographic_2016, 
-      col.names = c('Response',
-                    'Sex',
-                    'Count',
-                    'Percentage'),
-      booktabs = TRUE,
-      linesep = ""
+low_income_demographic_2016_table <- 
+  kable(low_income_demographic_2016,
+        col.names = c('Response',
+                      'Sex',
+                      'Count',
+                      'Percentage'),
+        booktabs = TRUE,
+        linesep = ""
       )
+
+
+LID_2016_table <- add_header_above(low_income_demographic_2016_table, 
+                                   header = c("2016" = 4))
+LID_2016_table
+```
+
+```{r}
+#| label: tbl-lowincomedemo
+#| tbl-cap: Low Income Response Count and Proportions (%) by Sex
+#| warning: false
+#| echo: false
+
+# 2006 table
+low_income_demographic_2006 <-
+  cleaned_GSS_data[c('year','low_income','sex')] 
+
+low_income_demographic_2006 <- low_income_demographic_2006 |>
+  filter(year==2006) |>
+  mutate(response = factor(low_income, levels = responses)) |>
+  group_by(response, sex) |>
+  summarise(count = n()) |>
+  mutate(percentage = round((count / sum(count)) * 100, 2))
+
+# 2016 table
+low_income_demographic_2016 <- 
+  cleaned_GSS_data[c('year','low_income','sex')] 
+
+low_income_demographic_2016 <- low_income_demographic_2016 |>
+  filter(year==2016) |>
+  mutate(response = factor(low_income, levels = responses)) |>
+  group_by(response, sex) |>
+  summarise(count = n()) |>
+  mutate(percentage = round((count / sum(count)) * 100, 2))
+
+# Combine tables
+combined_table <- inner_join(low_income_demographic_2006,
+                             low_income_demographic_2016, 
+                             by = c("response", "sex"))
+kable(combined_table,
+      col.names = c("Response",
+                    "Sex",
+                    "Count",
+                    "Percentage",
+                    "Count",
+                    "Percentage"),
+      booktabs = TRUE,
+      linesep = "") |>
+  add_header_above(c( " " = 2, "2006" = 2, "2016" = 2), bold = TRUE)
+
+
 ```
 
 @tbl-anyreason2006
