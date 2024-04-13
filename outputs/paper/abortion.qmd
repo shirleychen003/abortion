@@ -772,13 +772,47 @@ ggplot(age_data, mapping = aes(x = age, y = n)) +
 
 ### Sex
 ```{r}
-#| label: tbl-agedemographic
-#| fig-cap: Rape Response Proportion (%) by Age
+#| label: tbl-rapedemographic
+#| fig-cap: Rape Response Proportion (%) by Sex
 #| warning: false
 #| echo: false
 #| message: false
 
+# 2006 table
+rape_demographic_2006 <- data_2006[c('sex', 'rape')] 
+
+rape_demographic_2006 <- rape_demographic_2006 |>
+  mutate(response = factor(rape, levels = responses)) |>
+  group_by(response, sex) |>
+  summarise(count = n()) |>
+  mutate(percentage = round((count / sum(count)) * 100, 2))
+
+# 2016 table
+rape_demographic_2016 <- data_2016[c('rape','sex')] 
+
+rape_demographic_2016 <- rape_demographic_2016 |>
+  mutate(response = factor(rape, levels = responses)) |>
+  group_by(response, sex) |>
+  summarise(count = n()) |>
+  mutate(percentage = round((count / sum(count)) * 100, 2))
+
+# Combine tables
+combined_R_table <- inner_join(rape_demographic_2006,
+                             rape_demographic_2016, 
+                             by = c("response", "sex"))
+kable(combined_R_table,
+      col.names = c("Response",
+                    "Sex",
+                    "Count",
+                    "Percentage",
+                    "Count",
+                    "Percentage"),
+      booktabs = TRUE,
+      linesep = "") |>
+  add_header_above(c( " " = 2, "2006" = 2, "2016" = 2), bold = TRUE)
+
 ```
+
 
 @tbl-rape2006
 
