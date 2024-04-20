@@ -8,6 +8,8 @@ This paper explores the public opinions of American adults in 2006 and 2016 on v
 4. If the woman wants it for any reason?
 This repo provides an analysis of how the perspectives on reasons for abortion (eg. low income household, rape, endangered health, and any reason) have evolved from 2006 to 2016. The impact of age, gender, public movements, changing laws, and religious views on public opinion is discussed.
 
+*"Please be advised: This paper includes in-depth discussions on abortion, a topic that may be distressing to some readers."*
+
 ## File Structure
 
 The repo is structured as:
