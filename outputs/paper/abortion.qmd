@@ -56,6 +56,9 @@ data_2016 <- cleaned_GSS_data |>
   filter(year==2016)
 
 
+data_2006$religion <- factor(data_2006$religion, levels = religion_order)
+data_2016$religion <- factor(data_2016$religion, levels = religion_order)
+
 rape_data <- cleaned_GSS_data[c('year', 'rape')]
 low_income_data <- cleaned_GSS_data[c('year', 'low_income')]
 endangered_health_data <- cleaned_GSS_data[c('year', 'endangered_health')]
@@ -119,11 +122,16 @@ However, starting in 2002, computer-assisted personal interviewing (CAPI) method
 
 ### Strengths and Limitations
 
+GSS data was collected through surveys that were conducted using both online and in person methods. Training on recording data in real time was administered to the interviewers who conducted the in person surveys, expanding the scope of data collection methods and enhancing versatility. Cost effectiveness and accessibility has also been promoted by the GSS, demonstrated through the integration of computer-assisted personal interviewing (CAPI) methods for the questionnaires. The GSS is a known, reliable source that encompasses a vast range of topics, such as socioeconomic status, political attitudes, life satisfaction, etc (NORC SOURCE). Additionally, the GSS expanded their scope to non-English speakers in 2006, encouraging inclusion and representatives in their data. The surveys continue to be administered, ensuring a comprehensive understanding of societal opinions and trends over time. 
+Although the GSS possesses many strengths, there are limitations to consider within the organization. The online surveys may have a learning curve for the older generations due to limited technological literacy, which may cause older generations to not participate in surveys at all. That being said, conducting in person surveys is not the most cost-friendly solution, as more time and resources are usually involved. Biases are also more likely to happen when faced with interviewers in person. 
+
 ### Biases to Consider
+
+When conducting research, many biases can affect the accuracy of your results. Especially in a survey about such a controversial and sensitive topic, biases are bound to arise. For example, a common bias that arises is the social desirability bias, where respondents will provide a response that seems more socially acceptable, regardless of their true beliefs(7). Respondents may either show significant support or strong disapproval for the topic depending on the environment they are surrounded in. This also relates to cultural bias, as the cultural/societal norms that individuals are accustomed to can greatly affect their responses. Since the responses were mainly measured with “yes” and “no” responses, acquiescence bias can arise, which is when respondents are prone to constantly agreeing to the prompt despite their true belief. In order to mitigate this bias, it’s important to vary questions and answers and use multiple choice questions along with scale questions (7). In addition, it would be favourable to include response choices that have more variety than just simple “yes” or “no” responses. 
 
 ## Data Cleaning
 
-The open source statistical programming language [@R-base] was used to clean and analyze the data, along with producing the graphs. The main packages that supported this process included [@R-tidyverse], [@R-ggplot2], [@R-knitr], [@R-janitor], and [@R-lubridate].
+The open source statistical programming language [@R-base] was used to clean and analyze the data, along with producing the graphs and tables. The main packages that supported this process included [@R-tidyverse], [@R-ggplot2], [@R-knitr], and [@R-janitor].
 
 The cleaning process involved filtering the specific data variables used for our analysis from the downloaded GSS dataset, and renaming any variables with meaningful names. For example, rather than “abany” being the column name for “The woman wants an abortion for any reason?” , we renamed it to ‘any_reason’, as shown in @tbl-cleanedvariables. Further, the numerical values representing the participants’ responses for the abortion (eg. Yes - 1, No - 2) and religion (eg. Protestant - 1, Catholic - 2, etc.) were changed to the representative words. @tbl-cleanedvariables shows the old and new variable names for the abortion questions used in cleaning, the description of variables, and sample responses. Further, data from only years 2006 and 2016 were obtained. 
 
