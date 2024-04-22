@@ -15,8 +15,8 @@ library(janitor)
 
 # Open data
 raw_GSS_data <-
-  read_csv(
-    "inputs/data/raw_GSS_data.csv",
+  read_parquet(
+    "inputs/data/raw_GSS_data.parquet",
     show_col_types = FALSE
   )
 
@@ -36,4 +36,4 @@ filtered_GSS_data <- filtered_GSS_data |>
   filter(year %in% selected_years)
 
 #### Save data ####
-write_csv(filtered_GSS_data, "outputs/data/filtered_GSS_data.csv")
+write_parquet(filtered_GSS_data, "outputs/data/filtered_GSS_data.parquet")

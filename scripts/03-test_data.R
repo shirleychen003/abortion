@@ -13,8 +13,8 @@ library(tidyverse)
 
 #### Test data ####
 cleaned_GSS_data<-
-  read_csv(
-    "outputs/data/cleaned_GSS_data.csv",
+  read_parquet(
+    "outputs/data/cleaned_GSS_data.parquet",
     show_col_types = FALSE
   )
 
@@ -74,4 +74,4 @@ class(cleaned_GSS_data$year) == "numeric"
 sum(!(unique(cleaned_GSS_data$year) %in%
         c("2006",
           "2016",
-          NA))) == 0
+          NA)

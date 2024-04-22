@@ -26,6 +26,7 @@ library(kableExtra)
 library(gt)
 library(ggpubr)
 library(patchwork)
+library(arrow)
 
 #### Import data ####
 cleaned_GSS_data <-
@@ -68,9 +69,12 @@ total_participants <-cleaned_GSS_data |>
 
 # Introduction
 
-in progress...
+Discussion about abortion access continues to be a contentious and polarizing matter within many societies around the world. One side of the battle, which is commonly referred to as the “pro-life” perspective, advocates for restrictive laws on abortions, arguing for the rights of the unborn and declaring the procedure as a moral issue. On the other side, the “pro-choice” side advocates for reproductive rights, arguing for the fundamental right that humans have to make their own choices with their bodies, which includes obtaining an abortion. One of the earliest instances related to abortion laws in the United States dates back to 1847, when the American Medical Association (AMA) was formed (1). During this time, state legislatures moved to ban abortions since AMA members had launched a criminalization campaign against abortions. In the decades following, all the states were required to restrict abortions by law, with special exceptions involving health reasons. Restrictive laws on abortion access were normalized, and the stigma around the procedure continued to grow. Since then, the fight for reproductive rights has been characterized by both challenges and developments, with the U.S, Supreme Court implementing the infamous Roe v. Wade law protecting the right to an abortion in 1973, but then overturning the law in 2022 (1). 
 
-In \[Data\], the data collection methodology, the data cleaning processes, and key variables. In \[Results\], the relationship between demographic information of participants and their responses as well as the overall change in importance is analyzed with supportive figures. Finally, in \[Discussion\], the significance and possible causes of our findings are explored within the factors of socioeconomic status, sex and age.
+In this paper, we will look at multifaceted reasons why women may want to obtain an abortion and the public’s opinion on if they should be legally able to. Sourced from the U.S. General Statistical Survey (GSS) from NORC at the University of Chicago, I extract the variables representing the reasons of rape, endangered health, low income, and any reason, and consolidate demographic factors such as sex, age, and religion to provide an extensive analysis. Overall, it becomes evident that when considering the immediate health status of the women (rape and/or endangered health), respondents are more likely to support an abortion. A significant number of respondents have less sympathy when considering the socioeconomic status of the women or personal reasons that may not be explicitly disclosed, potentially disregarding the complexity in circumstances and individual autonomy. 
+
+In \[Data\], the data source and methodology, the data cleaning processes, biases and limitations,  and key variables that are interacted with are presented. In \[Results\], the relationships between demographic information of participants and their responses are analyzed with supportive graphs and tables. Finally, in \[Discussion\], the significance and possible causes of our findings are explored within the factors of religious beliefs, socioeconomic status, sex and age.
+
 
 # Data
 
@@ -301,7 +305,7 @@ ggplot(any_reason_percentages, aes(
 # Results
 ## Respondent Demographics
 
-@tbl-gender shows the number and percentage of male and female respondents for 2006 and 2016. Responses were filtered to be strictly male or female. For both years, the percentage of female participants were higher than the male participants, as the female participant percentages were always above 50% while the male participant percentages stayed close to the mid 40% range. 
+@tbl-gender shows the count and percentage of male and female respondents for 2006 and 2016. Responses were filtered to be strictly male or female. For both years, the percentage of female participants were higher than the male participants, as the female participant percentages were always above 50% while the male participant percentages stayed close to the mid 40% range. 
 
 ```{r}
 #| label: tbl-gender
@@ -331,7 +335,6 @@ kable(gender_demographic_data,
 
 age_group_2006 <- cleaned_GSS_data |>
   filter(year == 2006) |>
-
   mutate(age_group_2006 = case_when(
     age >= 18 & age <= 24 ~ "18-24",
     age >= 25 & age <= 34 ~ "25-34",
@@ -1120,26 +1123,25 @@ kable(combined_AR_table,
 
 ### Religious Views
 
-Narrowing down the religions, @tbl-religionreasons displays the proportion of yes and no responses specifically for the Protestant and Non-Religious Respondents. The Protestant group was chosen since it was the religious group with the highest proportion, and the Non-Religious group was chosen to compare how religion may affect one's perspective on the issue. 
+Narrowing down the religions, @fig-religionprop displays the proportion of yes and no responses specifically for the Protestant and Non-Religious Respondents. The Protestant group was chosen since it was the religious group with the highest proportion of respondents, and the Non-Religious group was chosen to compare how religion may affect one's perspective on the issue. 
+As we can see from @fig-religionprop, a higher proportion of protestant answered "no" consistently for each reason for abortion. These responses may be due to moral teachings and inteprations of life within the Christian religion, prompting more people to believe that abortion is taking away a life. Both Non-Religious and Protestant respondents showed the least support for rape cases or low income for reasons to obtain a legal abortion. Although the fraction of Protestants choosing "no" is higher, the graph illustrates how there is a shared perspective among the two groups regarding perspectives on abortion in cases involving rape or financial hardship. 
 
 ```{r}
-#| label: tbl-religionreasons
-#| tbl-cap: Proportion of Responses for Protestants
+#| label: fig-religionprop
+#| fig-cap: Proportion of Responses from Protestant and Non-Religious Participants 
 #| warning: false
 #| echo: false
 
-comparison_data <- cleaned_GSS_data |>
+prot_none <- cleaned_GSS_data |>
   filter(religion %in% c("Protestant", "None")) |>
   select(religion, rape, low_income, endangered_health, any_reason)
 
-# Reshape data from wide to long format
-comparison_data_long <- comparison_data |>
+prot_none_data <- prot_none |>
   pivot_longer(cols = c(rape, low_income, endangered_health, any_reason),
                names_to = "reason",
                values_to = "response")
 
-# Plot the proportion of "Yes" and "No" responses for each reason, grouped by religion
-ggplot(comparison_data_long, aes(x = reason, fill = response)) +
+ggplot(prot_none_data, aes(x = reason, fill = response)) +
   geom_bar(position = "fill", stat = "count") +
   facet_wrap(~ religion, ncol = 1) +
   labs(x = "Reasons for Abortion",
@@ -1154,7 +1156,6 @@ ggplot(comparison_data_long, aes(x = reason, fill = response)) +
         axis.title = element_text(size = 10),   
         strip.text = element_text(size = 14)) 
 ```
-
 
 # Discussion
 
@@ -1184,4 +1185,3 @@ asdf
 
 \newpage
 
-# References

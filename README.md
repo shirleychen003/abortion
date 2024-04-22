@@ -28,8 +28,4 @@ The repo is structured as:
 Due to the file’s large size and Github limitations, we were unable to upload the raw data retrieved from the GSS Data Explorer website and the converted CSV version of the raw data to this repository. In order to run the files in the scripts folder (more specifically, the `01-download_data.R file`), attend to the following instructions:
 1. Visit the website https://gssdataexplorer.norc.org/gss_data and download the STATA Format Download file.
 2. Once a file named GSS_stata.zip is finished downloading, unzip the file. There should be two PDF files, one TXT file, and a DTA file.
-3. Locate the DTA file and rename it to GSS7218_R1.dta. Move it to the `inputs` folder so that the path is "inputs/data/GSS7218_R1.dta"
-
-## Statement on LLM usage
-
-Navigate to `inputs/LLM` to view a statement on LLM usage.
+3. Locate the DTA file and rename it to GSS7218_R1.dta. Move it to the `inputs` folder so that t

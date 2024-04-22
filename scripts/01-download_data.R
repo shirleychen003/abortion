@@ -11,9 +11,10 @@
 #### Workspace setup ####
 library(tidyverse)
 library(haven)
+library(arrow)
 
 #### Acquire data ####
 converted_gss_data <- read_dta("inputs/data/GSS7218_R1.dta")
 
-#### Save data as CSV file ####
-write_csv(converted_gss_data, "inputs/data/raw_GSS_data.csv")
+#### Save data as Parquet file ####
+write_parquet(converted_gss_data, "inputs/data/raw_GSS_data.parquet")

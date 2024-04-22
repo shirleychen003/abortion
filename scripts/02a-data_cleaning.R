@@ -15,8 +15,8 @@ library(janitor)
 
 # Open data
 cleaned_GSS_data <-
-  read_csv(
-    "outputs/data/filtered_GSS_data.csv",
+  read_parquet(
+    "outputs/data/filtered_GSS_data.parquet",
     show_col_types = FALSE
   )
 
@@ -32,44 +32,63 @@ cleaned_GSS_data <- cleaned_GSS_data |>
   )
 
 # Rename religion responses
-cleaned_GSS_data <-cleaned_GSS_data |>
-  mutate(religion = recode(religion,
-                      '1' = 'Protestant',
-                      '2' = 'Catholic',
-                      '3' = 'Jewish',
-                      '4' = 'None',
-                      '5' = 'Other',
-                      '6' = 'Buddhism',
-                      '7' = 'Hinduism',
-                      '8' = 'Other eastern religions', 
-                      '9' = 'Muslim/Islam',
-                      '10' = 'Orthodox-Christian',
-                      '11' = 'Christian',
-                      '12' = 'Native American',
-                      '13' = 'Inter-nondenominational'))
+cleaned_GSS_data <- cleaned_GSS_data |>
+  mutate(religion = case_when(
+    religion == 1 ~ 'Protestant',
+    religion == 2 ~ 'Catholic',
+    religion == 3 ~ 'Jewish',
+    religion == 4 ~ 'None',
+    religion == 5 ~ 'Other',
+    religion == 6 ~ 'Buddhism',
+    religion == 7 ~ 'Hinduism',
+    religion == 8 ~ 'Other eastern religions',
+    religion == 9 ~ 'Muslim/Islam',
+    religion == 10 ~ 'Orthodox-Christian',
+    religion == 11 ~ 'Christian',
+    religion == 12 ~ 'Native American',
+    religion == 13 ~ 'Inter-nondenominational',
+    TRUE ~ as.character(religion)  
+  ))
 
 # Rename sex responses
-cleaned_GSS_data <-cleaned_GSS_data |>
-  mutate(sex = recode(sex,
-                      '1' = 'male',
-                      '2' = 'female'))
+cleaned_GSS_data <- cleaned_GSS_data |>
+  mutate(sex = case_when(
+    sex == 1 ~ 'male',
+    sex == 2 ~ 'female',
+    TRUE ~ as.character(sex)  
+  ))
 
 # Rename variable responses
-cleaned_GSS_data <-cleaned_GSS_data |>
-  mutate(any_reason = recode(any_reason, 
-                             '1' = 'yes', '2' = 'no'))
-cleaned_GSS_data <-cleaned_GSS_data |>
-  mutate(low_income = recode(low_income, 
-                             '1' = 'yes', '2' = 'no'))
-cleaned_GSS_data <-cleaned_GSS_data |>
-  mutate(endangered_health = recode(endangered_health, 
-                             '1' = 'yes', '2' = 'no'))
-cleaned_GSS_data <-cleaned_GSS_data |>
-  mutate(rape = recode(rape, '1' = 'yes', '2' = 'no'))
-cleaned_GSS_data <-cleaned_GSS_data |>
-  mutate(any_reason = recode(any_reason, 
-                             '1' = 'yes', '2' = 'no'))
+
+cleaned_GSS_data <- cleaned_GSS_data |>
+  mutate(any_reason = case_when(
+    any_reason == 1 ~ 'yes',
+    any_reason == 2 ~ 'no',
+    TRUE ~ as.character(any_reason)
+  ))
+
+cleaned_GSS_data <- cleaned_GSS_data |>
+  mutate(low_income = case_when(
+    low_income == 1 ~ 'yes',
+    low_income == 2 ~ 'no',
+    TRUE ~ as.character(low_income)
+  ))
+
+cleaned_GSS_data <- cleaned_GSS_data |>
+  mutate(endangered_health = case_when(
+    endangered_health == 1 ~ 'yes',
+    endangered_health == 2 ~ 'no',
+    TRUE ~ as.character(endangered_health)
+  ))
+
+cleaned_GSS_data <- cleaned_GSS_data |>
+  mutate(rape = case_when(
+    rape == 1 ~ 'yes',
+    rape == 2 ~ 'no',
+    TRUE ~ as.character(rape)
+  ))
+
 
 
 #### Save data ####
-write_csv(cleaned_GSS_data, "outputs/data/cleaned_GSS_data.csv")
+write_parquet(cleaned_GSS_data, "outputs/data/cleaned_GSS_data.parquet")
