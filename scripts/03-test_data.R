@@ -74,4 +74,4 @@ class(cleaned_GSS_data$year) == "numeric"
 sum(!(unique(cleaned_GSS_data$year) %in%
         c("2006",
           "2016",
-          NA)
+          NA))) == 0
