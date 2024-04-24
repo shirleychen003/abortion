@@ -1,4 +1,4 @@
-# How Opinions On Abortion Have Evolved Among American Adults
+# Evolving Worldviews: Factors Influencing the Shifting Perspectives of American Adults on Abortion
 
 ## Overview
 This paper explores the public opinions of American adults in 2006 and 2016 on varying reasons a woman may want to obtain a legal abortion. Various factors such as age group, sex, religious beliefs, and influential movements/law changes are discussed. Respondents were instructed to choose Yes(1) or No(2) after being given prompts to convey their perspectives on if the following reasons were valid:
