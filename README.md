@@ -31,5 +31,4 @@ Due to the file’s large size and Github limitations, we were unable to upload 
 3. Locate the DTA file and rename it to GSS7218_R1.dta. Move it to the `inputs` folder so that the path is "inputs/data/GSS7218_R1.dta"
 
 ## Statement on LLM usage
-
-Navigate to `inputs/LLM` to view a statement on LLM usage.
+No LLMs were used in the research, replication, or writing of this paper.
