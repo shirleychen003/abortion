@@ -1,12 +1,13 @@
 ---
-title: "How Opinions On Abortion Have Evolved Among American Adults"
-subtitle: "Analysis of US General Social Survey in 2006 and 2016"
-author: Shirley Chen
+title: "Evolving Worldviews: Factors Influencing the Shifting Perspectives of American Adults on Abortion" 
+subtitle: "An Analysis of US General Social Survey in 2006 and 2016"
+author: 
+- Shirley Chen
 thanks: "Code and data in this report are available at: https://github.com/shirleychen003/abortion.git."
 date: today
 date-format: "long" 
 format: pdf
-abstract: abstract in progress :)
+abstract: Debates surrounding abortion access continue to generate a divide within the United States population. Surveys extracted from the U.S. General Social Survey’s datasets were utilized to explore the different reasons why women may obtain abortions and the demographic factors that may affect the public’s opinion on the topic. My investigation revealed that the general population is more likely to support abortion if the reason is health related, and that religious and the senior age group are more likely to criticize abortion legalization laws. Overall, my findings showcase the diverse range of factors that may affect one’s perspective on abortion access, including potential rationales for abortion and relevant demographic factors. 
 toc: true
 number-sections: true
 bibliography: bibliography.bib
@@ -79,7 +80,7 @@ Abortion rates have reported to be declining on both a national and regional lev
 
 In this paper, we will look at multifaceted reasons why women may want to obtain an abortion and the public’s opinion on if they should be legally able to. Sourced from the U.S. General Statistical Survey (GSS) from NORC at the University of Chicago, I extract the variables representing the reasons of rape, endangered health, low income, and any reason, and consolidate demographic factors such as sex, age, and religion to provide an extensive analysis. Overall, it becomes evident that when considering the immediate health status of the women (rape and/or endangered health), respondents are more likely to support an abortion. A significant number of respondents have less sympathy when considering the socioeconomic status of the women or personal reasons that may not be explicitly disclosed, potentially disregarding the complexity in circumstances and individual autonomy. Religious affiliation and the older age group seem to further have a significant effect on the respondents’ opinion, demonstrating a discouraging outlook on the issue. 
 
-In \[Data\], the data source and methodology, the data cleaning processes, biases and limitations,  and key variables that are interacted with are presented. In \[Results\], the relationships between demographic information of participants and their responses are analyzed with supportive graphs and tables. Finally, in \[Discussion\], the significance and possible causes of our findings are explored within the factors of religious beliefs, socioeconomic status, sex and age.
+In [Data], the data source and methodology, the data cleaning processes, biases and limitations,  and key variables that are interacted with are presented. In [Results], the relationships between demographic information of participants and their responses are analyzed with supportive graphs and tables. Finally, in [Discussion], the significance and possible causes of our findings are explored within the factors of religious beliefs, socioeconomic status, sex and age.
 
 
 # Data
@@ -314,7 +315,7 @@ ggplot(any_reason_percentages, aes(
 #| label: tbl-gender
 #| echo: false
 #| warning: false
-#| tbl-cap: Respondent Gender Count and Percentage for 2006 and 2016
+#| tbl-cap: The Proportion of Females and Males Involved in the Survey in 2006 and 2016
 
 gender_demographic_data <- cleaned_GSS_data |>
   group_by(year, sex) |>
@@ -334,7 +335,7 @@ kable(gender_demographic_data,
 #| label: tbl-agegroups
 #| echo: false
 #| warning: false
-#| tbl-cap: Respondent Count of Participants in Age Groups in 2006 and 2016
+#| tbl-cap: Respondent Count of Participants Grouped by their Specified Age Groups for 2006 and 2016
 
 age_group_2006 <- cleaned_GSS_data |>
   filter(year == 2006) |>
@@ -386,7 +387,7 @@ kable(combined_age_group_table,
 #| label: tbl-age
 #| echo: false
 #| warning: false
-#| tbl-cap: Total Respondent Mean, Median, Mode, Min, and Max Age by Year
+#| tbl-cap: Total Respondent Mean, Median, Mode, Min, and Max Age by Year (2006 and 2016)
 
 age_2006_data <- data_2006 |>
   select('age') |>
@@ -431,7 +432,7 @@ kable(combined_age_data,
 #| label: tbl-religion
 #| echo: false
 #| warning: false
-#| tbl-cap: Respondent Religion Count and Percentage for 2006 
+#| tbl-cap: Proportion of Respondents by Identified Religion in 2006 and 2016
 
 religion2006_data <- data_2006 |>
   group_by(religion) |>
@@ -475,7 +476,7 @@ kable(combined_data,
 #| message: false
 #| echo: false
 #| warning: false
-#| fig-cap: Number of Respondents by Religion
+#| fig-cap: Graph Visually Displaying the Number of Respondents grouped by Identified Religion
 
 religion_data <- cleaned_GSS_data |>
   count(religion) |>
@@ -498,7 +499,7 @@ ggplot(religion_data, aes(x = religion, y = n)) +
 
 ```{r}
 #| label: tbl-avgresponses
-#| tbl-cap: Average of Responses by Year Divided by Question
+#| tbl-cap: The Average of Responses by Year grouped by Prompt Regarding Abortion
 #| warning: false
 #| echo: false
 
@@ -549,7 +550,7 @@ kable(combined_table,
 #| echo: false
 #| message: false
 #| warning: false
-#| fig-cap: Proportion (%) of Yes and No Responses to All Variables in 2006
+#| fig-cap: Percentages of Yes and No Responses to All Prompts Regarding Abortion in 2006
 
 # Prepare data
 variable_data_2006 <- data_2006[c('rape', 
@@ -665,7 +666,7 @@ combined_graph_2006
 #| echo: false
 #| message: false
 #| warning: false
-#| fig-cap: Proportion (%) of Yes and No Responses to All Variables in 2016
+#| fig-cap: Percentages of Yes and No Responses to All Prompts Regarding Abortion in 2016
 # Prepare data
 variable_data_2016 <- data_2016[c('rape', 
                                'low_income',
@@ -805,7 +806,7 @@ More specifically, the proportion of respondents organized by age group are show
 
 ```{r}
 #| label: tbl-age_rape
-#| tbl-cap: Rape Response Proportion (%) by Age
+#| tbl-cap: Response Percentage Proportions to Question "Should it be possible for a pregnant woman to obtain a legal abortion if she became pregnant as a result of rape?" by Age
 #| warning: false
 #| echo: false
 #| message: false
@@ -840,9 +841,10 @@ kable(switched_rows,
       linesep = "")
 
 ```
+
 ```{r}
 #| label: tbl-age_endangeredhealth
-#| tbl-cap: Endangered Health Response Proportion (%) by Age
+#| tbl-cap: Response Percentage Proportions to Question "Should it be possible for a pregnant woman to obtain a legal abortion if the woman's own health is seriously endangered by the pregnancy?" by Age
 #| warning: false
 #| echo: false
 #| message: false
@@ -877,9 +879,10 @@ kable(switched_rows,
       linesep = "")
 
 ```
+
 ```{r}
 #| label: tbl-age_lowincome
-#| tbl-cap: Low Income Response Proportion (%) by Age
+#| tbl-cap: Response Percentage Proportions to Question "Should it be possible for a pregnant woman to obtain a legal abortion if the family has a very low income and cannot afford any more children?" by Age
 #| warning: false
 #| echo: false
 #| message: false
@@ -914,9 +917,10 @@ kable(switched_rows,
       linesep = "")
 
 ```
+
 ```{r}
 #| label: tbl-age_anyreason
-#| tbl-cap: Any Reason Response Proportion (%) by Age
+#| tbl-cap: Response Percentage Proportions to Question "Should it be possible for a pregnant woman to obtain a legal abortion if the woman wants it for any reason?" by Age
 #| warning: false
 #| echo: false
 #| message: false
@@ -960,7 +964,7 @@ Males also showed the most support for abortions in the case where the mother's 
 
 ```{r}
 #| label: tbl-rapedemographic
-#| tbl-cap: Rape Response Count and Proportions (%) by Sex
+#| tbl-cap: Rape Response Count and Percentage Proportions grouped by Sex
 #| warning: false
 #| echo: false
 
@@ -1000,7 +1004,7 @@ kable(combined_R_table,
 
 ```{r}
 #| label: tbl-endangeredhealthdemographic
-#| tbl-cap: Endangered Health Response Count and Proportions (%) by Sex
+#| tbl-cap: Endangered Health Response Count and Percentage Proportions grouped by Sex
 #| warning: false
 #| echo: false
 
@@ -1045,7 +1049,7 @@ kable(combined_EH_table,
 
 ```{r}
 #| label: tbl-lowincomedemographic
-#| tbl-cap: Low Income Response Count and Proportions (%) by Sex
+#| tbl-cap: Low Income Response Count and Percentage Proportions grouped by Sex
 #| warning: false
 #| echo: false
 
@@ -1086,7 +1090,7 @@ kable(combined_LI_table,
 
 ```{r}
 #| label: tbl-anyreasondemographic
-#| tbl-cap: Any Reason Response Count and Proportions (%) by Sex
+#| tbl-cap: Any Reason Response Count and Percentage Proportions grouped by Sex
 #| warning: false
 #| echo: false
 
@@ -1131,7 +1135,7 @@ As we can see from @fig-religionprop, a higher proportion of protestant answered
 
 ```{r}
 #| label: fig-religionprop
-#| fig-cap: Proportion of Responses from Protestant and Non-Religious Participants 
+#| fig-cap: Proportion of Responses for each Prompt filtered by the Protestant and Non-Religious Participants 
 #| warning: false
 #| echo: false
 
@@ -1182,13 +1186,6 @@ It is also important to consider the differing perspectives within each religion
 The financial status of a pregnant woman and any future economic considerations are pivotal in determining if an abortion will be attained. The United States contains some of the highest pregnancy, childbirth, and postpartum costs on a global scale, with vaginal delivery costing around $ 11,453 USD on average and cesarean sections averaging $17,103 [@babycosts]. These costs are taking into account that there are no further medical complications that require further finances, or any pregnancy or postpartum care expenses. Having multiple babies or factors such as preexisting health conditions could potentially increase the expenses involved with the process. Additionally, although insurance considerably reduces the costs, it is estimated that $3,000 is required out of pocket for pregnancy and birth expenses. Without insurance, mothers are often required to pay $35,500 or more to healthcare providers [@babycosts]. If the mother were providing financial assistance to the child until they become an adult at age 18, the U.S. Agriculture Department has stated that they are expected to spend approximately $310,605 total, or around $17,000 a year [@babycosts]. Given all of this information, finances will also vary depending on the state, as there are different protection laws and costs by the state. 
 
 Considering the federal minimum wage ($7.75 USD an hour) illustrates the difficulties that may arise when low-income families are trying to meet basic needs, along with providing sufficient childcare services. According to the Economic Policy Institute, a minimum wage worker must work 1,162 hours to cover annual costs for a 4 year old and 1,548 hours for an infant, which consists of working full time from January to July and January to September respectively [@childcosts]. With minimum wage increases not always mirroring the rising rate of inflation, financially unstable families often have a hard time making ends meet. This situation demonstrates the perpetuating poverty cycle within America, as although individuals are contributing to the economy by having children, the quality of life is not guaranteed due to the high costs of essential life services. The unpredictable and high costs that come with pregnancy and childcare are a major factor in a woman’s decision to obtain an abortion. In unexpected pregnancies, women of low economic status are often faced with the choice of continuing the pregnancy and needing to pay maintenance expenses, or terminating the pregnancy to avoid further financial and logistical complications. 
-
-## Temporal Movements and Law Changes
-
-
-### 2006
-
-### 2016
 
 \newpage
 
