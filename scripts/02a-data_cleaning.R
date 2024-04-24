@@ -15,8 +15,8 @@ library(janitor)
 
 # Open data
 cleaned_GSS_data <-
-  read_parquet(
-    "outputs/data/filtered_GSS_data.parquet",
+  read_csv(
+    "outputs/data/filtered_GSS_data.csv",
     show_col_types = FALSE
   )
 
@@ -91,4 +91,4 @@ cleaned_GSS_data <- cleaned_GSS_data |>
 
 
 #### Save data ####
-write_parquet(cleaned_GSS_data, "outputs/data/cleaned_GSS_data.parquet")
+write_csv(cleaned_GSS_data, "outputs/data/cleaned_GSS_data.csv")

@@ -13,8 +13,8 @@ library(tidyverse)
 
 #### Test data ####
 cleaned_GSS_data<-
-  read_parquet(
-    "outputs/data/cleaned_GSS_data.parquet",
+  read_csv(
+    "outputs/data/cleaned_GSS_data.csv",
     show_col_types = FALSE
   )
 
